@@ -132,22 +132,6 @@ task_promote_culture = {
 				desc = STEWARD_PROMOTE_CULTURE_DEVELOPMENT_PENALTY
 			}
 		}
-
-		# Polish Consolidation
-		if = {
-			limit = {
-				scope:councillor_liege.culture = culture:polish
-				exists = scope:county
-				scope:county = {
-					has_county_modifier = polish_consolidation
-				}
-			}
-			add = {
-				value = promote_culture_polish_consolidation_bonus
-				desc = STEWARD_PROMOTE_CULTURE_POLISH_CONSOLIDATION
-			}
-		}
-
 		# Conversion speed game rules
 		if = {
 			limit = {
@@ -504,7 +488,6 @@ task_promote_culture = {
 
 	monthly_on_action = task_promote_culture_side_effects
 
-	## councilor's experience trait
 	on_monthly = {
 		trigger_event = {
 			on_action = councillor_steward_level_up_action
@@ -1084,18 +1067,7 @@ task_promote_culture = {
 			}
 			add = 10000 # Always keep going if this is already chosen
 		}
-		else_if = {
-			limit = {
-				scope:councillor_liege.culture = {
-					has_innovation = innovation_desert_tactics #Best way to check if the culture is Outremer
-				}
-				scope:councillor_liege = {
-					gold >= steward_convert_culture_value
-				}
-			}
-			add = 500
-		}
-		else_if = {
+		if = {
 			limit = {
 				scope:councillor_liege = {
 					OR = {
@@ -1122,7 +1094,7 @@ task_promote_culture = {
 					}
 				}
 			}
-			add = 20
+			add = 100
 		}
 		if = {
 			limit = {
@@ -1145,7 +1117,7 @@ task_promote_culture = {
 					}
 				}
 			}
-			add = 20
+			add = 100
 		}
 		# Motivate the AI with an escalation agenda to take this task
 		if = {
@@ -1160,14 +1132,22 @@ task_promote_culture = {
 			}
 			add = -20
 		}
-		if = {
-			# Interrupt this task if you're bankrupt
-			limit = {
-				scope:councillor_liege = {
-					gold < -50
-				}
-			}
-			multiply = 0
-		}
+		# if = {
+			# # Don't do this too often
+			# limit = {
+				# scope:councillor_liege = {
+					# has_character_flag = no_ai_culture_convert
+					# NAND = { # ignore it if in Hostility with escalation
+						# has_character_flag = agenda_towards_escalation
+						# any_character_struggle = {
+							# involvement = involved
+							# is_struggle_type = iberian_struggle
+							# is_struggle_phase = struggle_iberia_phase_hostility
+						# }
+					# }
+				# }
+			# }
+			# multiply = 0
+		# }
 	}
 }
